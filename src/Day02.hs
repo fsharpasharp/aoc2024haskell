@@ -14,9 +14,6 @@ line = do
   space
   return l
 
-countTrue :: (a -> Bool) -> [a] -> Integer
-countTrue f = sum . fmap (toInteger . fromEnum . f)
-
 safe :: [Integer] -> Bool
 safe xs =
   let ds = zipWith (-) (tail xs) xs
