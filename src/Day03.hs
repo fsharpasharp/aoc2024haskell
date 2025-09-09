@@ -2,6 +2,7 @@
 
 module Day03 where
 
+import Solution
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -9,11 +10,8 @@ import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+import Data.Functor
 
-type Parser = Parsec Void Text
-
-integer :: Parser Integer
-integer = L.signed space L.decimal
 
 data Operation = Do | Dont | Result Integer
 
@@ -24,7 +22,7 @@ file = catMaybes <$> manyTill item eof
     item :: Parser (Maybe Operation)
     item =
       (Just <$> try operation)
-      <|> (anySingle *> pure Nothing)
+      <|> (anySingle $> Nothing)
 
 operation = doParser <|> dontParser <|> mul
 
@@ -48,12 +46,10 @@ mul = do
     _ <- chunk ")"
     return $ Result (x*y)
 
-solveA :: [Operation] -> Integer
-solveA = sum . mapMaybe solveA'
 
-solveA' :: Operation -> Maybe Integer
-solveA' (Result m) = Just m
-solveA' _ = Nothing
+solveA :: Operation -> Maybe Integer
+solveA (Result m) = Just m
+solveA _ = Nothing
 
 
 solveB :: [Operation] -> Integer
@@ -65,9 +61,10 @@ solveB = snd . foldl step (True, 0)
       Dont      -> (False, acc)
       Result n  -> (enabled, acc + if enabled then n else 0)
 
-solve :: IO ()
-solve = do
-  input <- T.pack <$> readFile "data/Day03.in"
-  case parse file "" input of
-    Left err -> putStrLn (errorBundlePretty err)
-    Right val -> print $ [solveA, solveB] <*> [val]
+
+solutionDay03 :: Solution [Operation] Integer
+solutionDay03 = Solution
+  { parseInput = parseOrDie file
+  , solvePart1 = sum . mapMaybe solveA
+  , solvePart2 = solveB
+  }

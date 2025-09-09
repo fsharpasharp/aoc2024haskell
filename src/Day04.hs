@@ -2,6 +2,7 @@
 
 module Day04 where
 
+import Solution
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -14,13 +15,6 @@ import Data.Array
 
 type Grid = Array (Int,Int) Char
 
-type Parser = Parsec Void Text
-
-integer :: Parser Integer
-integer = L.signed space L.decimal
-
-
-
 fromLines :: [String] -> Grid
 fromLines rows =
   let h = length rows
@@ -32,10 +26,8 @@ fromLines rows =
 (!?) :: Grid -> (Int,Int) -> Maybe Char
 g !? ix = if inRange (bounds g) ix then Just (g ! ix) else Nothing
 
-parseGrid :: String -> IO Grid
-parseGrid str = do
-  input <- readFile str
-  return $ fromLines (lines input)
+parseGrid :: Text ->  Grid
+parseGrid = fromLines . lines . T.unpack
 
 
 search :: Grid -> (Int, Int) -> [String]
@@ -61,7 +53,9 @@ searchMas g (i,j) = length words == 2 && all (\x -> x =="MAS" || x == "SAM") wor
 solveB :: Grid -> Int
 solveB g = sum [1 | p <- range (bounds g) , searchMas g p]
 
-solve :: IO ()
-solve = do
-  result <- traverse parseGrid ["data/Day04example.in", "data/Day04.in"]
-  print $ [solveA, solveB] <*> result
+solutionDay04 :: Solution Grid Int
+solutionDay04 = Solution
+  { parseInput = parseGrid
+  , solvePart1 = solveA
+  , solvePart2 = solveB
+  }
