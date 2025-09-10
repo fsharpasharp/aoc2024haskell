@@ -38,12 +38,6 @@ runSolution sol ts = do
 integer :: Parser Integer
 integer = L.signed space L.decimal
 
-countTrue :: (a -> Bool) -> [a] -> Integer
-countTrue f = sum . fmap (toInteger . fromEnum . f)
-
-
-solve s file solve = do
-  input <- pack <$> readFile s
-  case parse file "" input of
-    Left err -> putStrLn (errorBundlePretty err)
-    Right val -> print $ solve val
+solve filePath parser solve = do
+  input <- pack <$> readFile filePath
+  print $ solve . parser $ input
