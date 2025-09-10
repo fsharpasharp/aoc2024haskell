@@ -10,14 +10,17 @@ import All
 data AnySolution where
   AnySolution :: Show b => Solution a b -> AnySolution
 
+as :: Solution a b -> AnySolution
+as = AnySolution
+
 solutionMap :: Map.Map Int AnySolution
 solutionMap = Map.fromList
-  [ (1, AnySolution solution01)
-  , (2, AnySolution solution02)
-  , (3, AnySolution solution03)
-  , (4, AnySolution solution04)
-  , (5, AnySolution solution05)
-  , (6, AnySolution solution06)
+  [ (1, as solution01)
+  , (2, as solution02)
+  , (3, as solution03)
+  , (4, as solution04)
+  , (5, as solution05)
+  , (6, as solution06)
   ]
 
 runDay :: Int -> IO ()
