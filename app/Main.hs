@@ -4,12 +4,7 @@ module Main where
 
 import qualified Data.Map as Map
 
-import Solution
-import Day01
-import Day02
-import Day03
-import Day04
-import Day05
+import All
 
 -- Trick to make the list homogenous.
 data AnySolution where
@@ -17,11 +12,12 @@ data AnySolution where
 
 solutionMap :: Map.Map Int AnySolution
 solutionMap = Map.fromList
-  [ (1, AnySolution solutionDay01)
-  , (2, AnySolution solutionDay02)
-  , (3, AnySolution solutionDay03)
-  , (4, AnySolution solutionDay04)
-  , (5, AnySolution solutionDay05)
+  [ (1, AnySolution solution01)
+  , (2, AnySolution solution02)
+  , (3, AnySolution solution03)
+  , (4, AnySolution solution04)
+  , (5, AnySolution solution05)
+  , (6, AnySolution solution06)
   ]
 
 runDay :: Int -> IO ()

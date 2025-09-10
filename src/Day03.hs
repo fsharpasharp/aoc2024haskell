@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day03 where
+module Day03 (solution03) where
 
 import Solution
 import Data.Maybe
@@ -57,8 +57,8 @@ solveB = snd . foldl step (True, 0)
       Result n  -> (enabled, acc + if enabled then n else 0)
 
 
-solutionDay03 :: Solution [Operation] Integer
-solutionDay03 = Solution
+solution03 :: Solution [Operation] Integer
+solution03 = Solution
   { parseInput = parseOrDie file
   , solvePart1 = sum . mapMaybe solveA
   , solvePart2 = solveB

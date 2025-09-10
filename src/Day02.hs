@@ -1,4 +1,4 @@
-module Day02 where
+module Day02 (solution02) where
 
 import Solution
 import Text.Megaparsec
@@ -23,8 +23,8 @@ safeMinusOne xs = any safe (dropOneVariants xs)
   where dropOneVariants :: [a] -> [[a]]
         dropOneVariants ys = ys : [ take i ys ++ drop (i + 1) ys | i <- [0 .. length ys - 1] ]
 
-solutionDay02 :: Solution [[Integer]] Int
-solutionDay02 = Solution
+solution02 :: Solution [[Integer]] Int
+solution02 = Solution
   { parseInput = parseOrDie $ some line <* eof
   , solvePart1 = length . filter safe
   , solvePart2 = length . filter safeMinusOne

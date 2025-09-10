@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day04 where
+module Day04 (solution04) where
 
 import Solution
 import Data.Maybe
@@ -30,8 +30,8 @@ searchMas g (i,j) = length allWords == 2 && all (\x -> x =="MAS" || x == "SAM") 
 solveB :: Grid Char -> Int
 solveB g = sum [1 | p <- range (bounds g) , searchMas g p]
 
-solutionDay04 :: Solution (Grid Char) Int
-solutionDay04 = Solution
+solution04 :: Solution (Grid Char) Int
+solution04 = Solution
   { parseInput = parseGrid
   , solvePart1 = solveA
   , solvePart2 = solveB

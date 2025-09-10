@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day05 where
+module Day05 (solution05) where
 
 import Data.List (sort)
 import qualified Data.Map.Strict as M
@@ -69,8 +69,8 @@ solveB (rMap, us) =
       sorted = fmap (\x -> sort $ beforeSets rMap x `zip` x) invalids
    in sum . fmap (snd . \x -> x !! (length x `div` 2)) $ sorted
 
-solutionDay05 :: Solution (RuleMap, [[Integer]]) Integer
-solutionDay05 =
+solution05 :: Solution (RuleMap, [[Integer]]) Integer
+solution05 =
   Solution
     { parseInput = parseOrDie file
     , solvePart1 = solveA
