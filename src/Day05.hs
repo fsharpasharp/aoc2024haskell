@@ -54,22 +54,22 @@ isValid beforeOf = go S.empty
     go forb (p:ps)
       | p `S.member` forb = False
       | otherwise =
-          let forb' = forb `S.union` fromMaybe S.empty (M.lookup p beforeOf)
+          let forb' = forb `S.union` M.findWithDefault S.empty p beforeOf
           in go forb' ps
 
 solveA :: (RuleMap, [[Integer]]) -> Integer
 solveA (rMap, us) = sum . fmap (\x -> x !! (length x `div` 2)) . filter (isValid rMap) $ us
 
-
-
 beforeSets beforeOf update = 
     let relevant = S.fromList update in
-        fmap (\x -> length (relevant `S.intersection` fromMaybe S.empty (M.lookup x beforeOf))) update
+        fmap (\x -> S.size (relevant `S.intersection` M.findWithDefault S.empty x beforeOf)) update
 
 solveB :: (RuleMap, [[Integer]]) -> Integer
 solveB (rMap, us) = 
-    let sorted = fmap (\x -> sort $ beforeSets rMap x `zip` x) . filter (not . isValid rMap) $ us in
-        sum . fmap (snd . \x -> x !! (length x `div` 2)) $ sorted
+    let invalids = filter (not . isValid rMap) us
+        sorted = fmap (\x -> sort $ beforeSets rMap x `zip` x) invalids  in
+    sum . fmap (snd . \x -> x !! (length x `div` 2)) $ sorted
+
 
 solutionDay05 :: Solution (RuleMap, [[Integer]]) Integer
 solutionDay05 = Solution
