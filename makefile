@@ -6,7 +6,7 @@ BARREL := src/All.hs
 # All Haskell sources except the generated barrel
 HS_SRCS := $(shell find src -name '*.hs' ! -path 'src/All.hs')
 
-.PHONY: gen build run test clean
+.PHONY: gen build run test clean repl
 
 # Regenerate barrel when sources or the script change
 $(BARREL): $(SCRIPT) $(HS_SRCS)
