@@ -14,7 +14,6 @@ import Text.Megaparsec
     some,
   )
 import Text.Megaparsec.Char (eol, newline, space)
-import qualified Text.Megaparsec.Char.Lexer as L
 
 data Rule = Rule Integer Integer -- Before/After
   deriving (Show)
@@ -31,9 +30,9 @@ rules =
   some
     ( do
         a <- integer
-        chunk "|"
+        _ <- chunk "|"
         b <- integer
-        newline
+        _ <- newline
         return $ Rule a b
     )
 
@@ -41,11 +40,11 @@ updates :: Parser [[Integer]]
 updates = (integer `sepBy1` chunk ",") `sepEndBy` eol
 
 file = do
-  rules <- rules
+  rs <- rules
   space
-  updates <- updates
+  us <- updates
   eof
-  return (rulesMap rules, updates)
+  return (rulesMap rs, us)
 
 isValid :: RuleMap -> [Integer] -> Bool
 isValid beforeOf = go S.empty
@@ -73,7 +72,8 @@ solveB (rMap, us) =
 solutionDay05 :: Solution (RuleMap, [[Integer]]) Integer
 solutionDay05 =
   Solution
-    { parseInput = parseOrDie file,
-      solvePart1 = solveA,
-      solvePart2 = solveB
+    { parseInput = parseOrDie file
+    , solvePart1 = solveA
+    , solvePart2 = solveB
+    , files = ["data/Day05.in"]
     }

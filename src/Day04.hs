@@ -21,9 +21,9 @@ solveA :: Grid Char -> Int
 solveA g = length [s | p <- range (bounds g) , s <- search g p , s == "XMAS" || s == "SAMX"]
 
 searchMas :: Grid Char -> (Int, Int) -> Bool
-searchMas g (i,j) = length words == 2 && all (\x -> x =="MAS" || x == "SAM") words
+searchMas g (i,j) = length allWords == 2 && all (\x -> x =="MAS" || x == "SAM") allWords
   where
-    words = catMaybes [diagUp, diagDown]
+    allWords = catMaybes [diagUp, diagDown]
     diagUp = sequence [g !? (i+x,j+x) | x <- [-1..1]]
     diagDown = sequence [g !? (i-x,j+x) | x <- [-1..1]]
 
@@ -35,4 +35,5 @@ solutionDay04 = Solution
   { parseInput = parseGrid
   , solvePart1 = solveA
   , solvePart2 = solveB
+  , files = ["data/Day04.in"]
   }

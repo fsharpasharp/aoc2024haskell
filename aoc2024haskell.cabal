@@ -14,7 +14,7 @@ author:             fsharpasharp
 build-type:         Simple
 extra-doc-files:    CHANGELOG.md
 common warnings
-    ghc-options: -Wall
+    ghc-options: -Wall -Wno-missing-signatures
 
 library
   hs-source-dirs:      src
@@ -27,6 +27,7 @@ library
         hlint
   exposed-modules: Solution, Day01, Day02, Day03, Day04, Day05, Day06
   default-language: Haskell2010
+  ghc-options: -Wall -Wno-missing-signatures
 
 executable app
     import:           warnings

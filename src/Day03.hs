@@ -23,12 +23,12 @@ operation = doParser <|> dontParser <|> mul
 
 doParser :: Parser Operation
 doParser = do
-    chunk "do()"
+    _ <- chunk "do()"
     return Do
 
 dontParser :: Parser Operation
 dontParser = do
-    chunk "don't()" 
+    _ <- chunk "don't()" 
     return Dont
 
 
@@ -62,4 +62,5 @@ solutionDay03 = Solution
   { parseInput = parseOrDie file
   , solvePart1 = sum . mapMaybe solveA
   , solvePart2 = solveB
+  , files = ["data/Day03.in"]
   }

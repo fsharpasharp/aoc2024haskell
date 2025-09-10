@@ -28,4 +28,5 @@ solutionDay02 = Solution
   { parseInput = parseOrDie $ some line <* eof
   , solvePart1 = length . filter safe
   , solvePart2 = length . filter safeMinusOne
+  , files = ["data/Day02.in"]
   }
