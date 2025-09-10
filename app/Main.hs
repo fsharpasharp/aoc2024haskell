@@ -10,6 +10,7 @@ import Day01
 import Day02
 import Day03
 import Day04
+import Day05
 
 data AnySolution where
   AnySolution :: Show b => [FilePath] -> Solution a b -> AnySolution
@@ -20,6 +21,7 @@ solutionMap = Map.fromList
   , (2, AnySolution ["data/Day02.in"] solutionDay02)
   , (3, AnySolution ["data/Day03.in"] solutionDay03)
   , (4, AnySolution ["data/Day04example.in", "data/Day04.in"] solutionDay04)
+  , (5, AnySolution ["data/Day05example.in", "data/Day05.in"] solutionDay05)
   ]
 
 runDay :: Int -> IO ()

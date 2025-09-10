@@ -5,6 +5,7 @@ module Day05 where
 import Data.Array
 import qualified Data.Map
 import Data.Maybe
+import Data.List
 import qualified Data.Set as S
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -59,11 +60,20 @@ isValid beforeOf = go S.empty
 solveA :: (RuleMap, [[Integer]]) -> Integer
 solveA (rMap, us) = sum . fmap (\x -> x !! (length x `div` 2)) . filter (isValid rMap) $ us
 
-solve5 = solve "data/Day05.in" file solveA
+
+
+beforeSets beforeOf update = 
+    let relevant = S.fromList update in
+        fmap (\x -> length (relevant `S.intersection` fromMaybe S.empty (M.lookup x beforeOf))) update
+
+solveB :: (RuleMap, [[Integer]]) -> Integer
+solveB (rMap, us) = 
+    let sorted = fmap (\x -> sort $ beforeSets rMap x `zip` x) . filter (not . isValid rMap) $ us in
+        sum . fmap (snd . \x -> x !! (length x `div` 2)) $ sorted
 
 solutionDay05 :: Solution (RuleMap, [[Integer]]) Integer
 solutionDay05 = Solution
   { parseInput = parseOrDie file
   , solvePart1 = solveA
-  , solvePart2 = undefined
+  , solvePart2 = solveB
   }
