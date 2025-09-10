@@ -5,12 +5,8 @@ module Day01 where
 
 import Solution
 import Data.List
-import Data.Text (Text)
-import qualified Data.Text as T
-import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Bifunctor
 
 

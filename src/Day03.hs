@@ -4,12 +4,7 @@ module Day03 where
 
 import Solution
 import Data.Maybe
-import Data.Text (Text)
-import qualified Data.Text as T
-import Data.Void
 import Text.Megaparsec
-import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Functor
 
 

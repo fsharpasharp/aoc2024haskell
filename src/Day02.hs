@@ -1,12 +1,8 @@
 module Day02 where
 
 import Solution
-import Data.Text (Text)
-import qualified Data.Text as T
-import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
 
 line :: Parser [Integer]
 line = do
