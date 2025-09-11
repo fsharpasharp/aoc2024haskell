@@ -18,6 +18,7 @@ solutionMap = Map.fromList
   , (4, AnySolution solution04)
   , (5, AnySolution solution05)
   , (6, AnySolution solution06)
+  , (7, AnySolution solution07)
   ]
 
 runDay :: Int -> IO ()

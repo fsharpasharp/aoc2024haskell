@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day07 where
+module Day07 (solution07) where
 
 import Control.Monad
 import Solution

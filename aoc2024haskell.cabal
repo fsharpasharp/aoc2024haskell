@@ -34,7 +34,8 @@ library
     Day04,
     Day05,
     Day06,
-    Day07
+    Day07,
+    Day08
   default-language: Haskell2010
   ghc-options: -Wall -Wno-missing-signatures
 

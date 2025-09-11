@@ -11,6 +11,7 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Void
 import Data.Array
 
+-- Parsing related
 type Grid a = Array (Int,Int) a
 
 fromLines :: [String] -> Grid Char
@@ -29,7 +30,17 @@ parseGrid = fromLines . lines . unpack
 
 type Parser = Parsec Void Text
 
+parseOrDie :: Parser a -> Text -> a
+parseOrDie p t =
+  case parse p "" t of
+    Left e  -> error (errorBundlePretty e)
+    Right x -> x
 
+integer :: Parser Integer
+integer = L.signed space L.decimal
+
+
+-- Solution related
 data Solution a b = Solution
   { parseInput  :: Text -> a
   , solvePart1  :: a -> b
@@ -37,11 +48,6 @@ data Solution a b = Solution
   , files :: [FilePath]
   }
 
-parseOrDie :: Parser a -> Text -> a
-parseOrDie p t =
-  case parse p "" t of
-    Left e  -> error (errorBundlePretty e)
-    Right x -> x
 
 runSolution :: Show b => Solution a b -> IO ()
 runSolution sol = do
@@ -55,10 +61,18 @@ runSolution sol = do
   mapM_ print (files sol `zip` part2Results)
 
 
-integer :: Parser Integer
-integer = L.signed space L.decimal
-
 debug :: Show b => FilePath -> (Text -> a) -> [a -> b] -> IO ()
 debug filePath parser solvers = do
   input <- pack <$> readFile filePath
   print $ solvers <*> [parser input]
+
+
+-- Tuple algebra
+minus :: Num a => (a, a) -> (a, a) -> (a, a)
+minus (a,b) (c,d) = (a-c, b-d)
+
+add :: Num a => (a, a) -> (a, a) -> (a, a)
+add (a,b) (c,d) = (a+c, b+d)
+
+scale :: Num a => a -> (a,a) -> (a,a)
+scale k (a,b) = (k*a, k*b)
