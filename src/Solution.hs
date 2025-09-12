@@ -11,8 +11,9 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Void
 import Data.Array
 
--- Parsing related
+-- Grid related
 type Grid a = Array (Int,Int) a
+type Boundary = ((Int, Int), (Int, Int))
 
 fromLines :: [String] -> Grid Char
 fromLines rows =
@@ -28,6 +29,15 @@ g !? ix = if inRange (bounds g) ix then Just (g ! ix) else Nothing
 parseGrid :: Text ->  Grid Char
 parseGrid = fromLines . lines . unpack
 
+withinBounds :: Boundary -> (Int, Int) -> Bool
+withinBounds ((yMin, xMin), (yMax, xMax)) = go
+  where
+    go (y, x)
+      | x < xMin || y < yMin = False
+      | x > xMax || y > yMax = False
+      | otherwise = True
+
+-- Parser related
 type Parser = Parsec Void Text
 
 parseOrDie :: Parser a -> Text -> a

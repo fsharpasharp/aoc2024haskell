@@ -7,6 +7,8 @@ module All (
   module Day05,
   module Day06,
   module Day07,
+  module Day08,
+  module Day09,
   module Solution
 ) where
 
@@ -17,5 +19,7 @@ import Day04
 import Day05
 import Day06
 import Day07
+import Day08
+import Day09
 import Solution
 

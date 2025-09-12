@@ -1,12 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day08 where
+module Day08 (solution08) where
 
 import Data.Array
 import Data.List
 import qualified Data.Map.Strict as M
 import qualified Data.Set as S
-import Debug.Trace
 import Solution
 
 type CharToCoord = M.Map Char (S.Set (Int, Int))
@@ -25,9 +24,17 @@ data Distance = Distance
   deriving (Show)
 
 antinodes :: [Distance] -> S.Set (Int, Int)
-antinodes = foldl go S.empty
+antinodes = foldl' go S.empty
   where
     go s d = s `S.union` S.fromList [pos d `add` scale 2 (dist d), pos d `minus` dist d]
+
+fullAntinodes :: Boundary -> [Distance] -> S.Set (Int, Int)
+fullAntinodes b = foldl' go S.empty
+  where
+    go s d = s `S.union` S.fromList (forwards ++ backwards)
+      where
+        forwards = takeWhile (withinBounds b) [pos d `add` scale n (dist d) | n <- [0 ..]]
+        backwards = takeWhile (withinBounds b) [pos d `minus` scale n (dist d) | n <- [1 ..]]
 
 distances :: [(Int, Int)] -> [Distance]
 distances xs = do
@@ -39,27 +46,15 @@ distances xs = do
         dist = x2 `minus` x1
       }
 
-withinBounds ((yMin, xMin), (yMax, xMax)) = filter go
-  where
-    go (y, x)
-      | x < xMin || y < yMin = False
-      | x > xMax || y > yMax = False
-      | otherwise = True
-
-solve grid = length . withinBounds (bounds grid) . S.toList . foldl1 S.union . fmap (antinodes . distances . S.toList) $ M.elems m
+solve anti grid = length . filter (withinBounds (bounds grid)) . S.toList . foldl1 S.union . fmap (anti . distances . S.toList) $ M.elems m
   where
     m = createMap grid
-
-sol = debug "data/Day08.in" parseGrid [solve]
 
 solution08 :: Solution (Grid Char) Int
 solution08 =
   Solution
     { parseInput = parseGrid,
-      solvePart1 = solve,
-      -- Extend antinodes for part 2.
-      solvePart2 = solve,
-      files = ["data/Day08example.in"]
+      solvePart1 = solve antinodes,
+      solvePart2 = \g -> solve (fullAntinodes (bounds g)) g,
+      files = ["data/Day08.in"]
     }
-
-ss = runSolution solution08
