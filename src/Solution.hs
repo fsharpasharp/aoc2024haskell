@@ -23,7 +23,7 @@ fromLines rows =
                | r <- [0..h-1], c <- [0..w-1] ]
   in array ((0,0),(h-1,w-1)) as
 
-(!?) :: Grid Char -> (Int,Int) -> Maybe Char
+(!?) :: Grid a -> (Int,Int) -> Maybe a
 g !? ix = if inRange (bounds g) ix then Just (g ! ix) else Nothing
 
 parseGrid :: Text ->  Grid Char
@@ -86,3 +86,8 @@ add (a,b) (c,d) = (a+c, b+d)
 
 scale :: Num a => a -> (a,a) -> (a,a)
 scale k (a,b) = (k*a, k*b)
+
+
+
+adjacent :: Eq a => Num a => (a,a) -> [(a,a)]
+adjacent (y,x) = [(y+i, x+j) | i <- [-1, 0, 1], j <- [-1, 0, 1], abs i + abs j == 1]
