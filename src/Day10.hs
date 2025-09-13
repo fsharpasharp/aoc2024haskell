@@ -13,16 +13,13 @@ createMap grid = foldl go M.empty (assocs grid)
   where
     go m (i, e) = M.insertWith S.union e (S.singleton i) m
 
-solve :: Array (Int, Int) Int -> Int
-solve g = sum . fmap (go 0 . S.singleton) . S.toList . heights $ 0
-    where heights x = M.findWithDefault S.empty x (createMap g)
-          go :: Int -> S.Set (Int, Int) -> Int
-          go 9 curr = S.size curr
-          go n curr = go (n+1) (allAdjacent `S.intersection` heights (n+1))
-            where allAdjacent = foldl S.union S.empty (fmap (S.fromList . adjacent) (S.toList curr))
-
-
-s = debug "data/Day10.in" parse [solve]
+combinations :: Array (Int, Int) Int -> [[(Int, Int)]]
+combinations g = fmap (go 0 . return) (S.toList (heights 0))
+    where 
+          heights x = M.findWithDefault S.empty x . createMap $ g
+          go :: Int -> [(Int, Int)] -> [(Int, Int)]
+          go 9 curr = curr
+          go n curr = go (n+1) (concatMap (filter (`S.member` heights (n + 1)) . adjacent) curr)
 
 parse = fmap tryDigitToInt . parseGrid
   where tryDigitToInt x | isDigit x = digitToInt x
@@ -33,7 +30,7 @@ solution10 :: Solution (Grid Int) Int
 solution10 =
   Solution
     { parseInput = parse,
-      solvePart1 = solve,
-      solvePart2 = solve,
-      files = ["data/Day10example.in"]
+      solvePart1 = sum . fmap (S.size . S.fromList) . combinations,
+      solvePart2 = sum . fmap length . combinations,
+      files = ["data/Day10.in"]
     }
